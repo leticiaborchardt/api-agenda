@@ -1,5 +1,7 @@
 package com.example.agenda.domain.user;
 
+import com.example.agenda.domain.person.Person;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +26,10 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private UserRole role;
+
+    @OneToOne(mappedBy="user", cascade=CascadeType.ALL)
+    @JsonIgnore
+    private Person person;
 
     public User(String login, String password, UserRole role) {
         this.login = login;

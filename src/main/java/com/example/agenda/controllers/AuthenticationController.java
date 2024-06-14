@@ -1,7 +1,9 @@
 package com.example.agenda.controllers;
 
+import com.example.agenda.domain.person.Person;
 import com.example.agenda.domain.user.*;
 import com.example.agenda.infra.security.TokenService;
+import com.example.agenda.repositories.PersonRepository;
 import com.example.agenda.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PersonRepository personRepository;
 
     @Autowired
     TokenService tokenService;
@@ -47,6 +52,9 @@ public class AuthenticationController {
         User newUser = new User(data.login(), encryptedPassword, data.role());
 
         this.userRepository.save(newUser);
+
+        Person newPerson = new Person(data.person_name(), newUser);
+        this.personRepository.save(newPerson);
 
         return ResponseEntity.ok().build();
     }
